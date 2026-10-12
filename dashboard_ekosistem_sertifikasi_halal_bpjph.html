@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Kebutuhan Data Ekosistem Sertifikasi Halal BPJPH</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-navy-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-emerald-500 rounded-lg text-slate-900 font-bold">
+                        <i class="fa-solid fa-stamp text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight">BPJPH Data Ecosystem</h1>
+                        <p class="text-xs text-slate-400">Analisis Kebutuhan Data & Proyeksi Halal</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 text-xs">
+                    <span class="bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 px-3 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Data SIHALAL per 08-10 Oktober 2026
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Navigation Tabs -->
+        <div class="flex space-x-2 border-b border-slate-200 mb-6 overflow-x-auto custom-scrollbar pb-1">
+            <button onclick="switchTab('umkm')" id="tab-umkm" class="tab-btn active px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-store"></i> UMKM & Populasi
+            </button>
+            <button onclick="switchTab('proyeksi')" id="tab-proyeksi" class="tab-btn px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-chart-line"></i> Proyeksi Produk (2020-2029)
+            </button>
+            <button onclick="switchTab('p3h')" id="tab-p3h" class="tab-btn px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-users"></i> Pendamping P3H & Kapasitas
+            </button>
+            <button onclick="switchTab('pengajuan')" id="tab-pengajuan" class="tab-btn px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-file-signature"></i> Pengajuan & SLA
+            </button>
+            <button onclick="switchTab('rph')" id="tab-rph" class="tab-btn px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-drumstick-bite"></i> RPH / RPU & NKV
+            </button>
+            <button onclick="switchTab('lph')" id="tab-lph" class="tab-btn px-4 py-2.5 font-semibold text-sm rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-building-circle-check"></i> LPH & LHLN (MRA)
+            </button>
+        </div>
+
+        <!-- SECTION 1: UMKM & POPULASI -->
+        <div id="content-umkm" class="tab-content space-y-6">
+            <!-- Summary KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Populasi UMKM</p>
+                            <h3 class="text-2xl font-extrabold text-slate-900 mt-1">11.915.858</h3>
+                        </div>
+                        <div class="p-2.5 bg-blue-50 text-blue-600 rounded-lg">
+                            <i class="fa-solid fa-boxes-stacked text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">*Sumber: Kementerian UMKM RI (2025)</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pelaku Usaha Ber-SH</p>
+                            <h3 class="text-2xl font-extrabold text-emerald-600 mt-1">3.510.904</h3>
+                        </div>
+                        <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg">
+                            <i class="fa-solid fa-circle-check text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center gap-2">
+                        <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">29.46%</span>
+                        <span class="text-xs text-slate-500">Penetrasi Sertifikasi Halal</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Target Belum Ber-SH</p>
+                            <h3 class="text-2xl font-extrabold text-amber-600 mt-1">8.404.954</h3>
+                        </div>
+                        <div class="p-2.5 bg-amber-50 text-amber-600 rounded-lg">
+                            <i class="fa-solid fa-bullseye text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">Sisa Target Sertifikasi Halal</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pengolahan Mikro Kecil</p>
+                            <h3 class="text-2xl font-extrabold text-indigo-600 mt-1">3.580.946</h3>
+                        </div>
+                        <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg">
+                            <i class="fa-solid fa-industry text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">*Sumber: BPS Profil UMK 2025</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Data Table: Sektor UMKM -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-pie-chart text-emerald-600"></i> Populas UMKM Berdasarkan Sektor
+                        </h3>
+                        <span class="text-xs text-slate-500">KemenUMKM 2025</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 uppercase text-xs">
+                                    <th class="py-3 px-4 rounded-l">No</th>
+                                    <th class="py-3 px-4">Sektor</th>
+                                    <th class="py-3 px-4 text-right rounded-r">Jumlah UMKM</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">1</td>
+                                    <td class="py-3 px-4">Penyediaan Akomodasi dan Penyediaan Makan Minum</td>
+                                    <td class="py-3 px-4 text-right font-semibold">6.409.085</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">2</td>
+                                    <td class="py-3 px-4">Industri Pengolahan</td>
+                                    <td class="py-3 px-4 text-right font-semibold">4.173.038</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">3</td>
+                                    <td class="py-3 px-4">Pengangkutan dan Pergudangan</td>
+                                    <td class="py-3 px-4 text-right font-semibold">1.169.570</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">4</td>
+                                    <td class="py-3 px-4">Treatment Air, Air Limbah, Pemulihan Material Sampah & Remedisi</td>
+                                    <td class="py-3 px-4 text-right font-semibold">164.165</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-slate-50 font-bold text-slate-900 border-t-2 border-slate-200">
+                                    <td colspan="2" class="py-3 px-4">Total UMKM</td>
+                                    <td class="py-3 px-4 text-right text-emerald-700">11.915.858</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Data Table: Industri Pengolahan Mikro Kecil -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-indigo-600"></i> Detail Industri Pengolahan Mikro & Kecil (BPS)
+                        </h3>
+                        <span class="text-xs text-slate-500">BPS 2025</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 uppercase text-xs">
+                                    <th class="py-3 px-4 rounded-l">No</th>
+                                    <th class="py-3 px-4">Sub-Sektor Industri</th>
+                                    <th class="py-3 px-4 text-right rounded-r">Jumlah Pelaku Usaha</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">1</td>
+                                    <td class="py-3 px-4">Industri Makanan</td>
+                                    <td class="py-3 px-4 text-right font-semibold">1.981.958</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">2</td>
+                                    <td class="py-3 px-4">Industri Pakaian Jadi</td>
+                                    <td class="py-3 px-4 text-right font-semibold">611.221</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">3</td>
+                                    <td class="py-3 px-4">Industri Kayu, Gabus & Anyaman (Bambu/Rotan)</td>
+                                    <td class="py-3 px-4 text-right font-semibold">553.537</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">4</td>
+                                    <td class="py-3 px-4">Industri Tekstil</td>
+                                    <td class="py-3 px-4 text-right font-semibold">238.218</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">5</td>
+                                    <td class="py-3 px-4">Industri Pengolahan Lainnya</td>
+                                    <td class="py-3 px-4 text-right font-semibold">196.012</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-slate-50 font-bold text-slate-900 border-t-2 border-slate-200">
+                                    <td colspan="2" class="py-3 px-4">Total UMK Pengolahan</td>
+                                    <td class="py-3 px-4 text-right text-indigo-700">3.580.946</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: PROYEKSI PRODUK -->
+        <div id="content-proyeksi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Data Produk SIHALAL Realisasi & Hasil Proyeksi (2020 - 2029)</h3>
+                        <p class="text-xs text-slate-500">Mencakup histori data aktual SIHALAL & estimasi pertumbuhan metode Linear, MA-3, & ETS</p>
+                    </div>
+                </div>
+
+                <!-- Proyeksi Chart -->
+                <div class="h-80 w-full mb-6">
+                    <canvas id="proyeksiChart"></canvas>
+                </div>
+
+                <!-- Proyeksi Table -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-xs text-left border-collapse min-w-[1000px]">
+                        <thead>
+                            <tr class="bg-slate-800 text-white uppercase font-semibold">
+                                <th class="py-3 px-3 sticky left-0 bg-slate-800 z-10">Jenis Produk</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2020</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2021</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2022</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2023</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2024</th>
+                                <th class="py-3 px-2 text-right bg-slate-700/50">2025</th>
+                                <th class="py-3 px-2 text-right bg-emerald-800">2026 (P)</th>
+                                <th class="py-3 px-2 text-right bg-emerald-800">2027 (P)</th>
+                                <th class="py-3 px-2 text-right bg-emerald-800">2028 (P)</th>
+                                <th class="py-3 px-2 text-right bg-emerald-800">2029 (P)</th>
+                                <th class="py-3 px-3 text-center bg-slate-900">Metode</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Makanan</td>
+                                <td class="py-2.5 px-2 text-right">47.678</td>
+                                <td class="py-2.5 px-2 text-right">251.287</td>
+                                <td class="py-2.5 px-2 text-right">570.247</td>
+                                <td class="py-2.5 px-2 text-right">2.116.736</td>
+                                <td class="py-2.5 px-2 text-right">2.578.818</td>
+                                <td class="py-2.5 px-2 text-right">3.879.005</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">5.179.192</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">6.479.379</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">7.779.566</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">9.079.753</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Linear</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Minuman</td>
+                                <td class="py-2.5 px-2 text-right">5.388</td>
+                                <td class="py-2.5 px-2 text-right">23.974</td>
+                                <td class="py-2.5 px-2 text-right">52.732</td>
+                                <td class="py-2.5 px-2 text-right">267.458</td>
+                                <td class="py-2.5 px-2 text-right">200.758</td>
+                                <td class="py-2.5 px-2 text-right">291.395</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">382.032</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">472.669</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">563.306</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">653.943</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Linear</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Kosmetik</td>
+                                <td class="py-2.5 px-2 text-right">2.726</td>
+                                <td class="py-2.5 px-2 text-right">21.261</td>
+                                <td class="py-2.5 px-2 text-right">32.442</td>
+                                <td class="py-2.5 px-2 text-right">30.041</td>
+                                <td class="py-2.5 px-2 text-right">34.941</td>
+                                <td class="py-2.5 px-2 text-right">39.800</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">34.927</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">36.556</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">37.094</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">36.193</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Obat-obatan</td>
+                                <td class="py-2.5 px-2 text-right">957</td>
+                                <td class="py-2.5 px-2 text-right">8.857</td>
+                                <td class="py-2.5 px-2 text-right">13.867</td>
+                                <td class="py-2.5 px-2 text-right">8.906</td>
+                                <td class="py-2.5 px-2 text-right">7.706</td>
+                                <td class="py-2.5 px-2 text-right">10.397</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">9.003</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">9.035</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">9.478</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">9.172</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Barang Gunaan</td>
+                                <td class="py-2.5 px-2 text-right">201</td>
+                                <td class="py-2.5 px-2 text-right">843</td>
+                                <td class="py-2.5 px-2 text-right">4.364</td>
+                                <td class="py-2.5 px-2 text-right">9.320</td>
+                                <td class="py-2.5 px-2 text-right">12.911</td>
+                                <td class="py-2.5 px-2 text-right">24.369</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">35.827</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">47.285</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">58.743</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">70.201</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">ETS</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Penyembelihan</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">42</td>
+                                <td class="py-2.5 px-2 text-right">27</td>
+                                <td class="py-2.5 px-2 text-right">256</td>
+                                <td class="py-2.5 px-2 text-right">9.626</td>
+                                <td class="py-2.5 px-2 text-right">2.016</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">3.966</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">5.203</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">3.728</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">4.299</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Pengemasan</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">1</td>
+                                <td class="py-2.5 px-2 text-right">347</td>
+                                <td class="py-2.5 px-2 text-right">64</td>
+                                <td class="py-2.5 px-2 text-right">182</td>
+                                <td class="py-2.5 px-2 text-right">34</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">93</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">103</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">77</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">91</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Pengolahan</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">1</td>
+                                <td class="py-2.5 px-2 text-right">49</td>
+                                <td class="py-2.5 px-2 text-right">130</td>
+                                <td class="py-2.5 px-2 text-right">198</td>
+                                <td class="py-2.5 px-2 text-right">498</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">798</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">1.098</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">1.398</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">1.698</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">ETS</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Penjualan</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">222</td>
+                                <td class="py-2.5 px-2 text-right">69</td>
+                                <td class="py-2.5 px-2 text-right">565</td>
+                                <td class="py-2.5 px-2 text-right">120.689</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">40.441</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">53.898</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">71.676</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">55.338</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Penyajian</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">246</td>
+                                <td class="py-2.5 px-2 text-right">1</td>
+                                <td class="py-2.5 px-2 text-right">25</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">91</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">39</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">52</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">60</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Pendistribusian</td>
+                                <td class="py-2.5 px-2 text-right">692</td>
+                                <td class="py-2.5 px-2 text-right">2.644</td>
+                                <td class="py-2.5 px-2 text-right">4.479</td>
+                                <td class="py-2.5 px-2 text-right">7.424</td>
+                                <td class="py-2.5 px-2 text-right">49.882</td>
+                                <td class="py-2.5 px-2 text-right">63.326</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">76.770</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">90.214</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">103.658</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">117.102</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-semibold">ETS</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Jasa Penyimpanan</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">1</td>
+                                <td class="py-2.5 px-2 text-right">148</td>
+                                <td class="py-2.5 px-2 text-right">139</td>
+                                <td class="py-2.5 px-2 text-right">5.329</td>
+                                <td class="py-2.5 px-2 text-right">1.145</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">2.204</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">2.893</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">2.081</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">2.393</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Produk Biologi</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">0</td>
+                                <td class="py-2.5 px-2 text-right">147</td>
+                                <td class="py-2.5 px-2 text-right">1.100</td>
+                                <td class="py-2.5 px-2 text-right">659</td>
+                                <td class="py-2.5 px-2 text-right">506</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">755</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">640</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">634</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">676</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Produk Kimiawi</td>
+                                <td class="py-2.5 px-2 text-right">285</td>
+                                <td class="py-2.5 px-2 text-right">3.168</td>
+                                <td class="py-2.5 px-2 text-right">26.053</td>
+                                <td class="py-2.5 px-2 text-right">31.739</td>
+                                <td class="py-2.5 px-2 text-right">36.919</td>
+                                <td class="py-2.5 px-2 text-right">46.582</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">56.245</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">65.908</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">75.571</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">85.234</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Linear</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-2.5 px-3 font-bold sticky left-0 bg-white">Lain-lain</td>
+                                <td class="py-2.5 px-2 text-right">127</td>
+                                <td class="py-2.5 px-2 text-right">9.078</td>
+                                <td class="py-2.5 px-2 text-right">4.155</td>
+                                <td class="py-2.5 px-2 text-right">10</td>
+                                <td class="py-2.5 px-2 text-right">30</td>
+                                <td class="py-2.5 px-2 text-right">32</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">24</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">29</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50">28</td>
+                                <td class="py-2.5 px-2 text-right font-semibold bg-emerald-50/50 text-emerald-700">27</td>
+                                <td class="py-2.5 px-3 text-center"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-[10px] font-semibold">MA-3</span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-slate-900 text-white font-bold text-sm">
+                                <td class="py-3 px-3 sticky left-0 bg-slate-900">TOTAL</td>
+                                <td class="py-3 px-2 text-right">58.054</td>
+                                <td class="py-3 px-2 text-right">321.157</td>
+                                <td class="py-3 px-2 text-right">709.279</td>
+                                <td class="py-3 px-2 text-right">2.473.638</td>
+                                <td class="py-3 px-2 text-right">2.938.525</td>
+                                <td class="py-3 px-2 text-right">4.479.819</td>
+                                <td class="py-3 px-2 text-right text-emerald-400">5.822.368</td>
+                                <td class="py-3 px-2 text-right text-emerald-400">7.264.949</td>
+                                <td class="py-3 px-2 text-right text-emerald-400">8.707.090</td>
+                                <td class="py-3 px-2 text-right text-emerald-400 font-extrabold">10.116.180</td>
+                                <td class="py-3 px-3 text-center">-</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: P3H & KAPASITAS -->
+        <div id="content-p3h" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total SDM P3H Terdaftar</p>
+                    <h3 class="text-2xl font-extrabold text-slate-900 mt-1">105.711</h3>
+                    <p class="text-xs text-slate-500 mt-2">Seluruh Indonesia</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">P3H Aktif (2026)</p>
+                    <h3 class="text-2xl font-extrabold text-emerald-600 mt-1">24.485</h3>
+                    <p class="text-xs text-emerald-700 mt-2 font-medium">23,16% Rasio Aktif</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Proyeksi Kapasitas / Tahun</p>
+                    <h3 class="text-2xl font-extrabold text-indigo-600 mt-1">88.146.000</h3>
+                    <p class="text-xs text-slate-500 mt-2">Asumsi 10 pendampingan/P3H/hari</p>
+                </div>
+            </div>
+
+            <!-- Tabel P3H Per Provinsi -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-slate-50">
+                    <h3 class="font-bold text-slate-800">Data P3H & Kapasitas Pendampingan per Provinsi</h3>
+                    <div class="relative">
+                        <input type="text" id="searchP3H" onkeyup="filterTable('searchP3H', 'tableP3H')" placeholder="Cari Provinsi..." class="px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-48">
+                    </div>
+                </div>
+                <div class="p-4 overflow-x-auto max-h-[500px] custom-scrollbar">
+                    <table id="tableP3H" class="w-full text-xs text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-800 text-white uppercase">
+                            <tr>
+                                <th class="py-3 px-3">Provinsi</th>
+                                <th class="py-3 px-3 text-right">Total P3H</th>
+                                <th class="py-3 px-3 text-right">P3H Aktif 2026</th>
+                                <th class="py-3 px-3 text-right">Jml SH 2026</th>
+                                <th class="py-3 px-3 text-right">Kapasitas/Bln</th>
+                                <th class="py-3 px-3 text-right bg-emerald-800">Proyeksi Kapasitas/Bln</th>
+                                <th class="py-3 px-3 text-right bg-emerald-900">Proyeksi Kapasitas/Thn</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p3hTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: PENGAJUAN & SLA -->
+        <div id="content-pengajuan" class="tab-content hidden space-y-6">
+            <!-- SLA Box -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-xl shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Rata-Rata Penyelesaian</span>
+                        <h4 class="text-xl font-bold mt-1 text-emerald-400">Jalur Reguler</h4>
+                        <p class="text-xs text-slate-300 mt-2">Periode 1 Jan - 9 Okt 2026</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-4xl font-extrabold text-white">15,49</span>
+                        <span class="text-sm font-medium text-slate-300 block">Hari</span>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-emerald-800 to-emerald-900 text-white p-6 rounded-xl shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-emerald-200 font-semibold uppercase tracking-wider">Rata-Rata Penyelesaian</span>
+                        <h4 class="text-xl font-bold mt-1 text-emerald-300">Jalur Self Declare</h4>
+                        <p class="text-xs text-emerald-200 mt-2">Periode 1 Jan - 9 Okt 2026</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-4xl font-extrabold text-white">4,75</span>
+                        <span class="text-sm font-medium text-emerald-200 block">Hari</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Status Pengajuan -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-800">Status Pengajuan Sertifikat Halal Berdasarkan Provinsi</h3>
+                    <input type="text" id="searchPengajuan" onkeyup="filterTable('searchPengajuan', 'tablePengajuan')" placeholder="Cari Provinsi..." class="px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-48">
+                </div>
+                <div class="p-4 overflow-x-auto max-h-[500px] custom-scrollbar">
+                    <table id="tablePengajuan" class="w-full text-xs text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-800 text-white uppercase">
+                            <tr>
+                                <th class="py-3 px-4">Provinsi</th>
+                                <th class="py-3 px-4 text-right">Submit</th>
+                                <th class="py-3 px-4 text-right">Proses</th>
+                                <th class="py-3 px-4 text-right">Terbit</th>
+                                <th class="py-3 px-4 text-right font-bold bg-slate-900">Total Pengajuan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pengajuanTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: RPH / RPU & NKV -->
+        <div id="content-rph" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total RPH/TPH (BPS 2025)</p>
+                    <h3 class="text-2xl font-extrabold text-slate-900 mt-1">1.186</h3>
+                    <p class="text-xs text-slate-500 mt-2">1.120 Aktif | 66 Tidak Aktif</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">RPU ber-NKV</p>
+                    <h3 class="text-2xl font-extrabold text-amber-600 mt-1">290</h3>
+                    <p class="text-xs text-slate-500 mt-2">Tersebar di 25 Provinsi</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">RPH/RPU Bersertifikat Halal</p>
+                    <h3 class="text-2xl font-extrabold text-emerald-600 mt-1">6.012</h3>
+                    <p class="text-xs text-emerald-700 mt-2 font-medium">*Sumber SIHALAL Oct 2026</p>
+                </div>
+            </div>
+
+            <!-- Table RPH/RPU Integrasi -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-slate-800">Sebaran RPH / RPU, NKV & Status Sertifikasi Halal per Provinsi</h3>
+                    <input type="text" id="searchRPH" onkeyup="filterTable('searchRPH', 'tableRPH')" placeholder="Cari Provinsi..." class="px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-48">
+                </div>
+                <div class="p-4 overflow-x-auto max-h-[500px] custom-scrollbar">
+                    <table id="tableRPH" class="w-full text-xs text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-800 text-white uppercase">
+                            <tr>
+                                <th class="py-3 px-3">Provinsi</th>
+                                <th class="py-3 px-3 text-right bg-slate-700">RPH Aktif</th>
+                                <th class="py-3 px-3 text-right bg-slate-700">RPH Tdk Aktif</th>
+                                <th class="py-3 px-3 text-right bg-slate-700">Total RPH</th>
+                                <th class="py-3 px-3 text-right bg-slate-700">Dinas Vet</th>
+                                <th class="py-3 px-3 text-right bg-amber-800">RPU ber-NKV</th>
+                                <th class="py-3 px-3 text-right bg-emerald-800">RPH/RPU Ber-SH</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rphTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: LPH & LHLN -->
+        <div id="content-lph" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- LPH Pratama Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs font-bold">Pratama</span>
+                            LPH Berdasarkan Ruang Lingkup
+                        </h3>
+                        <span class="text-xs font-bold text-slate-600">Total: 286 LPH | 2.710 Auditor</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto max-h-[400px] custom-scrollbar">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead class="bg-slate-100 text-slate-700 uppercase">
+                                <tr>
+                                    <th class="py-2.5 px-3">Ruang Lingkup / Scope</th>
+                                    <th class="py-2.5 px-3 text-right">Jumlah LPH</th>
+                                    <th class="py-2.5 px-3 text-right">Jumlah Auditor</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100" id="lphPratamaBody">
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LPH Utama Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs font-bold">Utama</span>
+                            LPH Berdasarkan Ruang Lingkup
+                        </h3>
+                        <span class="text-xs font-bold text-slate-600">Total: 531 LPH | 24.042 Auditor</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto max-h-[400px] custom-scrollbar">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead class="bg-slate-100 text-slate-700 uppercase">
+                                <tr>
+                                    <th class="py-2.5 px-3">Ruang Lingkup / Scope</th>
+                                    <th class="py-2.5 px-3 text-right">Jumlah LPH</th>
+                                    <th class="py-2.5 px-3 text-right">Jumlah Auditor</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100" id="lphUtamaBody">
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LHLN (MRA) Table -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-slate-800">Lembaga Halal Luar Negeri (LHLN) yang Telah MRA Berdasarkan Negara</h3>
+                        <p class="text-xs text-slate-500">Scope Pelayanan Halal Internasional</p>
+                    </div>
+                    <input type="text" id="searchLHLN" onkeyup="filterTable('searchLHLN', 'tableLHLN')" placeholder="Cari Negara..." class="px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-48">
+                </div>
+                <div class="p-4 overflow-x-auto max-h-[450px] custom-scrollbar">
+                    <table id="tableLHLN" class="w-full text-xs text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-800 text-white uppercase">
+                            <tr>
+                                <th class="py-3 px-4 w-1/4">Negara</th>
+                                <th class="py-3 px-4 w-2/3">Ruang Lingkup (Scope)</th>
+                                <th class="py-3 px-4 text-right w-1/12">Jumlah LHLN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lhlnTableBody" class="divide-y divide-slate-200">
+                            <!-- JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            © 2026 Badan Penyelenggara Jaminan Produk Halal (BPJPH) - Kementerian Agama RI. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript Dataset & Visual Logic -->
+    <script>
+        // DATASETS EXPORTED FROM PDF EXACTLY AS GIVEN
+        const p3hData = [
+            { prov: "Aceh", total: 2185, aktif: 538, sh: 3242, kapBln: 5380, projBln: 161400, projThn: 1936800 },
+            { prov: "Bali", total: 363, aktif: 77, sh: 840, kapBln: 770, projBln: 23100, projThn: 277200 },
+            { prov: "Banten", total: 7265, aktif: 2125, sh: 76432, kapBln: 21250, projBln: 637500, projThn: 7650000 },
+            { prov: "Bengkulu", total: 1330, aktif: 387, sh: 15407, kapBln: 3870, projBln: 116100, projThn: 1393200 },
+            { prov: "DI Yogyakarta", total: 2695, aktif: 640, sh: 21229, kapBln: 6400, projBln: 192000, projThn: 2304000 },
+            { prov: "DKI Jakarta", total: 4373, aktif: 988, sh: 23368, kapBln: 9880, projBln: 296400, projThn: 3556800 },
+            { prov: "Gorontalo", total: 851, aktif: 109, sh: 1872, kapBln: 1090, projBln: 32700, projThn: 392400 },
+            { prov: "Jambi", total: 1568, aktif: 308, sh: 7654, kapBln: 3080, projBln: 92400, projThn: 1108800 },
+            { prov: "Jawa Barat", total: 25851, aktif: 6444, sh: 312642, kapBln: 64440, projBln: 1933200, projThn: 23198400 },
+            { prov: "Jawa Tengah", total: 13121, aktif: 3202, sh: 208889, kapBln: 32020, projBln: 960600, projThn: 11527200 },
+            { prov: "Jawa Timur", total: 16829, aktif: 3666, sh: 153606, kapBln: 36660, projBln: 1099800, projThn: 13197600 },
+            { prov: "Kalimantan Barat", total: 985, aktif: 201, sh: 5043, kapBln: 2010, projBln: 60300, projThn: 723600 },
+            { prov: "Kalimantan Selatan", total: 830, aktif: 173, sh: 5744, kapBln: 1730, projBln: 51900, projThn: 622800 },
+            { prov: "Kalimantan Tengah", total: 490, aktif: 101, sh: 2287, kapBln: 1010, projBln: 30300, projThn: 363600 },
+            { prov: "Kalimantan Timur", total: 1176, aktif: 266, sh: 6467, kapBln: 2660, projBln: 79800, projThn: 957600 },
+            { prov: "Kalimantan Utara", total: 269, aktif: 57, sh: 562, kapBln: 570, projBln: 17100, projThn: 205200 },
+            { prov: "Kep. Bangka Belitung", total: 479, aktif: 128, sh: 3182, kapBln: 1280, projBln: 38400, projThn: 460800 },
+            { prov: "Kepulauan Riau", total: 750, aktif: 207, sh: 5916, kapBln: 2070, projBln: 62100, projThn: 745200 },
+            { prov: "Lampung", total: 5718, aktif: 922, sh: 43671, kapBln: 9220, projBln: 276600, projThn: 3319200 },
+            { prov: "Maluku", total: 355, aktif: 60, sh: 959, kapBln: 600, projBln: 18000, projThn: 216000 },
+            { prov: "Maluku Utara", total: 262, aktif: 25, sh: 316, kapBln: 250, projBln: 7500, projThn: 90000 },
+            { prov: "Nusa Tenggara Barat", total: 1303, aktif: 283, sh: 9905, kapBln: 2830, projBln: 84900, projThn: 1018800 },
+            { prov: "Nusa Tenggara Timur", total: 410, aktif: 74, sh: 759, kapBln: 740, projBln: 22200, projThn: 266400 },
+            { prov: "Papua", total: 156, aktif: 27, sh: 314, kapBln: 270, projBln: 8100, projThn: 97200 },
+            { prov: "Papua Barat", total: 132, aktif: 16, sh: 278, kapBln: 160, projBln: 4800, projThn: 57600 },
+            { prov: "Papua Barat Daya", total: 42, aktif: 27, sh: 476, kapBln: 270, projBln: 8100, projThn: 97200 },
+            { prov: "Papua Pegunungan", total: 3, aktif: 2, sh: 95, kapBln: 20, projBln: 600, projThn: 7200 },
+            { prov: "Papua Selatan", total: 29, aktif: 7, sh: 598, kapBln: 70, projBln: 2100, projThn: 25200 },
+            { prov: "Papua Tengah", total: 33, aktif: 8, sh: 446, kapBln: 80, projBln: 2400, projThn: 28800 },
+            { prov: "Riau", total: 2016, aktif: 438, sh: 17429, kapBln: 4380, projBln: 131400, projThn: 1576800 },
+            { prov: "Sulawesi Barat", total: 617, aktif: 73, sh: 1336, kapBln: 730, projBln: 21900, projThn: 262800 },
+            { prov: "Sulawesi Selatan", total: 2966, aktif: 558, sh: 11790, kapBln: 5580, projBln: 167400, projThn: 2008800 },
+            { prov: "Sulawesi Tengah", total: 677, aktif: 171, sh: 8292, kapBln: 1710, projBln: 51300, projThn: 615600 },
+            { prov: "Sulawesi Tenggara", total: 1007, aktif: 142, sh: 2220, kapBln: 1420, projBln: 42600, projThn: 511200 },
+            { prov: "Sulawesi Utara", total: 237, aktif: 57, sh: 922, kapBln: 570, projBln: 17100, projThn: 205200 },
+            { prov: "Sumatera Barat", total: 2997, aktif: 585, sh: 30011, kapBln: 5850, projBln: 175500, projThn: 2106000 },
+            { prov: "Sumatera Selatan", total: 2072, aktif: 444, sh: 20170, kapBln: 4440, projBln: 133200, projThn: 1598400 },
+            { prov: "Sumatera Utara", total: 3269, aktif: 949, sh: 64256, kapBln: 9490, projBln: 284700, projThn: 3416400 }
+        ];
+
+        const pengajuanData = [
+            { prov: "ACEH", submit: 148, proses: 6561, terbit: 06729 },
+            { prov: "BALI", submit: 151, proses: 858, terbit: 748 },
+            { prov: "BANTEN", submit: 4922, proses: 19127, terbit: 6952 },
+            { prov: "BENGKULU", submit: 632, proses: 4670, terbit: 782 },
+            { prov: "DAERAH ISTIMEWA YOGYAKARTA", submit: 2278, proses: 8210, terbit: 9223 },
+            { prov: "DKI JAKARTA", submit: 2062, proses: 11287, terbit: 013 },
+            { prov: "GORONTALO", submit: 198, proses: 0115, terbit: 34 },
+            { prov: "JAMBI", submit: 522, proses: 1830, terbit: 834 },
+            { prov: "JAWA BARAT", submit: 24808, proses: 82811, terbit: 74672 },
+            { prov: "JAWA TENGAH", submit: 14674, proses: 15285, terbit: 3193 },
+            { prov: "JAWA TIMUR", submit: 10785, proses: 26271, terbit: 1027 },
+            { prov: "KALIMANTAN BARAT", submit: 222, proses: 472, terbit: 3987 },
+            { prov: "KALIMANTAN SELATAN", submit: 193, proses: 9228, terbit: 530 },
+            { prov: "KALIMANTAN TENGAH", submit: 51, proses: 1281, terbit: 6334 },
+            { prov: "KALIMANTAN TIMUR", submit: 75, proses: 4342, terbit: 5450 },
+            { prov: "KALIMANTAN UTARA", submit: 12, proses: 323, terbit: 039 },
+            { prov: "KEPULAUAN BANGKA BELITUNG", submit: 111, proses: 3215, terbit: 858 },
+            { prov: "KEPULAUAN RIAU", submit: 65, proses: 3133, terbit: 3353 },
+            { prov: "LAMPUNG", submit: 1736, proses: 7222, tr: 1467, terbit: 1467 },
+            { prov: "Luar Negeri", submit: 55, proses: 966, terbit: 90 },
+            { prov: "MALUKU", submit: 167, proses: 630, terbit: 54 },
+            { prov: "MALUKU UTARA", submit: 42, proses: 772, terbit: 000 },
+            { prov: "NUSA TENGGARA BARAT", submit: 252, proses: 7541, terbit: 241 },
+            { prov: "NUSA TENGGARA TIMUR", submit: 14, proses: 1474, terbit: 851 },
+            { prov: "PAPUA", submit: 6, proses: 331, terbit: 892 },
+            { prov: "PAPUA BARAT", submit: 12, proses: 361, terbit: 565 },
+            { prov: "PAPUA BARAT DAYA", submit: 13, proses: 110, terbit: 35 },
+            { prov: "PAPUA PEGUNUNGAN", submit: 1, proses: 7, terbit: 0 },
+            { prov: "PAPUA SELATAN", submit: 7, proses: 192, terbit: 0 },
+            { prov: "PAPUA TENGAH", submit: 2, proses: 139, terbit: 0 },
+            { prov: "RIAU", submit: 244, proses: 4056, terbit: 9038 },
+            { prov: "SULAWESI BARAT", submit: 98, proses: 421, terbit: 809 },
+            { prov: "SULAWESI SELATAN", submit: 2196, proses: 1753, terbit: 878 },
+            { prov: "Sulawesi Tengah", submit: 321, proses: 8518, terbit: 663 },
+            { prov: "SULAWESI TENGGARA", submit: 281, proses: 1212, terbit: 745 },
+            { prov: "SULAWESI UTARA", submit: 101, proses: 1757, terbit: 19 },
+            { prov: "SUMATERA BARAT", submit: 2617, proses: 9811, terbit: 7714 },
+            { prov: "SUMATERA SELATAN", submit: 705, proses: 1768, terbit: 739 },
+            { prov: "SUMATERA UTARA", submit: 1218, proses: 21521, terbit: 93249 }
+        ];
+
+        const rphNkvHalalData = [
+            { prov: "Aceh", rphAktif: 22, rphInaktif: 1, rphTotal: 23, dinas: 23, nkv: 0, halal: 13 },
+            { prov: "Sumatera Utara", rphAktif: 26, rphInaktif: 1, rphTotal: 27, dinas: 33, nkv: 6, halal: 147 },
+            { prov: "Sumatera Barat", rphAktif: 17, rphInaktif: 0, rphTotal: 17, dinas: 19, nkv: 7, halal: 121 },
+            { prov: "Riau", rphAktif: 24, rphInaktif: 0, rphTotal: 24, dinas: 12, nkv: 0, halal: 140 },
+            { prov: "Jambi", rphAktif: 23, rphInaktif: 2, rphTotal: 25, dinas: 11, nkv: 1, halal: 12 },
+            { prov: "Sumatera Selatan", rphAktif: 8, rphInaktif: 4, rphTotal: 12, dinas: 17, nkv: 1, halal: 162 },
+            { prov: "Bengkulu", rphAktif: 18, rphInaktif: 1, rphTotal: 19, dinas: 10, nkv: 0, halal: 24 },
+            { prov: "Lampung", rphAktif: 20, rphInaktif: 3, rphTotal: 23, dinas: 15, nkv: 6, halal: 334 },
+            { prov: "Kep. Bangka Belitung", rphAktif: 2, rphInaktif: 1, rphTotal: 3, dinas: 7, nkv: 1, halal: 183 },
+            { prov: "Kepulauan Riau", rphAktif: 7, rphInaktif: 3, rphTotal: 10, dinas: 7, nkv: 1, halal: 80 },
+            { prov: "DKI Jakarta", rphAktif: 1, rphInaktif: 0, rphTotal: 1, dinas: 6, nkv: 5, halal: 272 },
+            { prov: "Jawa Barat", rphAktif: 125, rphInaktif: 0, rphTotal: 125, dinas: 27, nkv: 47, halal: 671 },
+            { prov: "Jawa Tengah", rphAktif: 102, rphInaktif: 9, rphTotal: 111, dinas: 35, nkv: 64, halal: 1477 },
+            { prov: "DI Yogyakarta", rphAktif: 5, rphInaktif: 1, rphTotal: 6, dinas: 5, nkv: 7, halal: 427 },
+            { prov: "Jawa Timur", rphAktif: 200, rphInaktif: 7, rphTotal: 207, dinas: 38, nkv: 83, halal: 791 },
+            { prov: "Banten", rphAktif: 26, rphInaktif: 1, rphTotal: 27, dinas: 8, nkv: 19, halal: 168 },
+            { prov: "Bali", rphAktif: 9, rphInaktif: 0, rphTotal: 9, dinas: 9, nkv: 7, halal: 89 },
+            { prov: "Nusa Tenggara Barat", rphAktif: 106, rphInaktif: 7, rphTotal: 113, dinas: 10, nkv: 4, halal: 115 },
+            { prov: "Nusa Tenggara Timur", rphAktif: 31, rphInaktif: 2, rphTotal: 33, dinas: 22, nkv: 0, halal: 7 },
+            { prov: "Kalimantan Barat", rphAktif: 19, rphInaktif: 1, rphTotal: 20, dinas: 14, nkv: 3, halal: 67 },
+            { prov: "Kalimantan Tengah", rphAktif: 12, rphInaktif: 1, rphTotal: 13, dinas: 14, nkv: 1, halal: 16 },
+            { prov: "Kalimantan Selatan", rphAktif: 11, rphInaktif: 7, rphTotal: 18, dinas: 13, nkv: 7, halal: 96 },
+            { prov: "Kalimantan Timur", rphAktif: 16, rphInaktif: 0, rphTotal: 16, dinas: 10, nkv: 6, halal: 58 },
+            { prov: "Kalimantan Utara", rphAktif: 2, rphInaktif: 0, rphTotal: 2, dinas: 5, nkv: 2, halal: 12 },
+            { prov: "Sulawesi Utara", rphAktif: 13, rphInaktif: 0, rphTotal: 13, dinas: 15, nkv: 0, halal: 14 },
+            { prov: "Sulawesi Tengah", rphAktif: 33, rphInaktif: 2, rphTotal: 35, dinas: 13, nkv: 1, halal: 39 },
+            { prov: "Sulawesi Selatan", rphAktif: 114, rphInaktif: 10, rphTotal: 124, dinas: 24, nkv: 9, halal: 322 },
+            { prov: "Sulawesi Tenggara", rphAktif: 35, rphInaktif: 1, rphTotal: 36, dinas: 17, nkv: 0, halal: 24 },
+            { prov: "Gorontalo", rphAktif: 9, rphInaktif: 0, rphTotal: 9, dinas: 6, nkv: 0, halal: 37 },
+            { prov: "Sulawesi Barat", rphAktif: 8, rphInaktif: 1, rphTotal: 9, dinas: 6, nkv: 1, halal: 47 },
+            { prov: "Maluku", rphAktif: 13, rphInaktif: 0, rphTotal: 13, dinas: 11, nkv: 0, halal: 0 },
+            { prov: "Maluku Utara", rphAktif: 21, rphInaktif: 1, rphTotal: 22, dinas: 10, nkv: 0, halal: 0 },
+            { prov: "Papua Barat", rphAktif: 2, rphInaktif: 0, rphTotal: 2, dinas: 7, nkv: 1, halal: 0 },
+            { prov: "Papua Barat Daya", rphAktif: 2, rphInaktif: 0, rphTotal: 2, dinas: 6, nkv: 0, halal: 1 },
+            { prov: "Papua", rphAktif: 6, rphInaktif: 0, rphTotal: 6, dinas: 9, nkv: 0, halal: 2 },
+            { prov: "Papua Selatan", rphAktif: 1, rphInaktif: 0, rphTotal: 1, dinas: 4, nkv: 0, halal: 2 },
+            { prov: "Papua Tengah", rphAktif: 2, rphInaktif: 0, rphTotal: 2, dinas: 8, nkv: 0, halal: 2 },
+            { prov: "Papua Pegunungan", rphAktif: 8, rphInaktif: 0, rphTotal: 8, dinas: 0, nkv: 0, halal: 0 },
+            { prov: "Luar Negeri", rphAktif: 0, rphInaktif: 0, rphTotal: 0, dinas: 0, nkv: 0, halal: 40 }
+        ];
+
+        const lphPratama = [
+            { scope: "Barang gunaan", lph: 13, auditor: 135 },
+            { scope: "Jasa pendistribusian", lph: 10, auditor: 106 },
+            { scope: "Jasa pengemasan", lph: 6, auditor: 64 },
+            { scope: "Jasa pengolahan", lph: 5, auditor: 83 },
+            { scope: "Jasa penjualan", lph: 3, auditor: 50 },
+            { scope: "Jasa penyajian", lph: 1, auditor: 26 },
+            { scope: "Jasa penyembelihan", lph: 19, auditor: 196 },
+            { scope: "Jasa penyimpanan", lph: 5, auditor: 65 },
+            { scope: "Kosmetik", lph: 17, auditor: 183 },
+            { scope: "Makanan", lph: 84, auditor: 654 },
+            { scope: "Minuman", lph: 82, auditor: 644 },
+            { scope: "Obat", lph: 18, auditor: 209 },
+            { scope: "Produk biologi", lph: 4, auditor: 70 },
+            { scope: "Produk kimiawi", lph: 15, auditor: 157 },
+            { scope: "Produk rekayasa genetik", lph: 4, auditor: 68 }
+        ];
+
+        const lphUtama = [
+            { scope: "Barang gunaan", lph: 46, auditor: 1749 },
+            { scope: "Jasa pendistribusian", lph: 37, auditor: 1641 },
+            { scope: "Jasa pengemasan", lph: 36, auditor: 1618 },
+            { scope: "Jasa pengolahan", lph: 38, auditor: 1652 },
+            { scope: "Jasa penjualan", lph: 32, auditor: 1548 },
+            { scope: "Jasa penyajian", lph: 32, auditor: 1566 },
+            { scope: "Jasa penyembelihan", lph: 33, auditor: 1610 },
+            { scope: "Jasa penyimpanan", lph: 33, auditor: 1559 },
+            { scope: "Kosmetik", lph: 36, auditor: 1648 },
+            { scope: "Makanan", lph: 51, auditor: 1792 },
+            { scope: "Minuman", lph: 51, auditor: 1792 },
+            { scope: "Obat", lph: 34, auditor: 1620 },
+            { scope: "Produk biologi", lph: 20, auditor: 1337 },
+            { scope: "Produk kimiawi", lph: 37, auditor: 1631 },
+            { scope: "Produk rekayasa genetik", lph: 15, auditor: 1279 }
+        ];
+
+        const lhlnMra = [
+            { country: "Argentina", scope: "Food, Slaughtering services", count: 1 },
+            { country: "Australia", scope: "Food, Beverages, Biological products, Slaughtering services, Drugs/Pharmaceuticals, Chemical products, Cosmetics, Storage services", count: 14 },
+            { country: "Austria", scope: "Food, Beverages", count: 2 },
+            { country: "Belarus", scope: "Food, Slaughtering services", count: 1 },
+            { country: "Belgium", scope: "Food, Beverages", count: 2 },
+            { country: "Brazil", scope: "Food, Beverages, Cosmetics, Chemical products, Slaughtering services, Drugs/Pharmaceuticals", count: 3 },
+            { country: "Canada", scope: "Food, Beverages, Cosmetics, Drugs, Slaughtering services", count: 2 },
+            { country: "Chile", scope: "Food, Beverages, Slaughtering services", count: 1 },
+            { country: "China", scope: "Food, Beverages, Biological products, Chemical products, Slaughtering services, Cosmetics, Drugs/Pharmaceuticals, GMO products, Consumer Goods, Packaging services, Storage", count: 13 },
+            { country: "Denmark", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Chemical products", count: 1 },
+            { country: "France", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Chemical products", count: 5 },
+            { country: "Germany", scope: "Food, Beverages, Cosmetics, Drugs/Pharmaceuticals, Biological products, Chemical products, Consumer Goods", count: 5 },
+            { country: "India", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Slaughtering services, Chemical products", count: 3 },
+            { country: "Ireland", scope: "Food, Beverages, Chemical products", count: 3 },
+            { country: "Italy", scope: "Food, Beverages, Cosmetics, Chemical products, Consumer Goods, Drugs/Pharmaceuticals", count: 5 },
+            { country: "Japan", scope: "Food, Beverages, Cosmetics, Chemical products, Slaughtering services, Drugs/Pharmaceuticals, Consumer Goods", count: 5 },
+            { country: "Kolombia", scope: "Food, Slaughtering services", count: 1 },
+            { country: "Lithuania", scope: "Food, Beverages", count: 1 },
+            { country: "Malaysia", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Chemical products, Consumer Goods, Processing services, Storage services, Packaging services, Distribution services", count: 1 },
+            { country: "Mexico", scope: "Food, Drugs/Pharmaceuticals, Cosmetics, Chemical products, Processing services", count: 1 },
+            { country: "Netherlands", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Biological products, Chemical products", count: 3 },
+            { country: "New Zealand", scope: "Food, Beverages, Chemical products, Slaughtering services", count: 3 },
+            { country: "Pakistan", scope: "Food, Beverages, Cosmetics, Chemical products, Slaughtering services, Drugs/Pharmaceuticals", count: 2 },
+            { country: "Philippines", scope: "Food, Beverages", count: 2 },
+            { country: "Polandia", scope: "Food, Beverages, Drugs/Pharmaceuticals, Slaughtering services", count: 3 },
+            { country: "Portugal", scope: "Food, Beverages", count: 1 },
+            { country: "Russia", scope: "Food, Beverages, Slaughtering services", count: 2 },
+            { country: "Saudi Arabia", scope: "Food, Beverages, Slaughtering services", count: 1 },
+            { country: "Singapore", scope: "Food, Beverages, Drugs/Pharmaceuticals, Cosmetics, Biological products, Chemical products, GMO products, Consumer Goods, Slaughtering, Processing, Storage, Packaging, Distribution, Sales, Serving", count: 1 },
+            { country: "South Africa", scope: "Food, Beverages", count: 2 },
+            { country: "South Korea", scope: "Drugs/Pharmaceuticals, Cosmetics, Food, Beverages, Chemical products, Consumer Goods, Slaughtering services, Storage services, Distribution services", count: 6 },
+            { country: "Spain", scope: "Food, Beverages, Cosmetics, Biological products, Chemical products, Slaughtering services, Drugs/Pharmaceuticals", count: 7 },
+            { country: "Sri Lanka", scope: "Food, Beverages, Cosmetics, Chemical products, Consumer Goods", count: 1 },
+            { country: "Sweden", scope: "Food, Beverages", count: 1 },
+            { country: "Switzerland", scope: "Food, Beverages, Cosmetics, Biological products, Chemical products", count: 1 },
+            { country: "Taiwan", scope: "Food, Beverages, Drugs, Cosmetics, Chemical Products", count: 1 },
+            { country: "Thailand", scope: "Food, Beverages, Cosmetics, Chemical products, Packaging services", count: 1 },
+            { country: "Tunisia", scope: "Food, Cosmetics", count: 1 },
+            { country: "Turkey", scope: "Food, Beverages, Biological products, Chemical products, Slaughtering services", count: 2 },
+            { country: "United Arab Emirates", scope: "Food, Beverages", count: 1 },
+            { country: "United Kingdom", scope: "Food, Beverages, Chemical products, Cosmetics, Slaughtering services, Drugs/Pharmaceuticals", count: 5 },
+            { country: "United States of America", scope: "Food, Beverages, Chemical products, Slaughtering services, Drugs/Pharmaceuticals, Cosmetics, Biological products", count: 5 },
+            { country: "Uruguay", scope: "Food, Slaughtering services", count: 1 },
+            { country: "Vietnam", scope: "Food, Beverages", count: 1 }
+        ];
+
+        // INITIALIZATION
+        document.addEventListener("DOMContentLoaded", () => {
+            renderP3HTable();
+            renderPengajuanTable();
+            renderRPHData();
+            renderLPHTables();
+            renderLHLNTable();
+            initProyeksiChart();
+        });
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-emerald-600', 'text-emerald-700', 'bg-emerald-50/50');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.add('active', 'border-emerald-600', 'text-emerald-700', 'bg-emerald-50/50');
+            activeBtn.classList.remove('border-transparent', 'text-slate-500');
+        }
+
+        // RENDER TABLES
+        function renderP3HTable() {
+            const body = document.getElementById('p3hTableBody');
+            let totalRow = { total: 0, aktif: 0, sh: 0, kapBln: 0, projBln: 0, projThn: 0 };
+            
+            body.innerHTML = p3hData.map(item => {
+                totalRow.total += item.total;
+                totalRow.aktif += item.aktif;
+                totalRow.sh += item.sh;
+                totalRow.kapBln += item.kapBln;
+                totalRow.projBln += item.projBln;
+                totalRow.projThn += item.projThn;
+                
+                return `<tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-3 font-semibold text-slate-800">${item.prov}</td>
+                    <td class="py-2.5 px-3 text-right">${item.total.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-medium text-emerald-600">${item.aktif.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right">${item.sh.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right">${item.kapBln.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold bg-emerald-50/30">${item.projBln.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-bold text-emerald-700 bg-emerald-50/50">${item.projThn.toLocaleString('id-ID')}</td>
+                </tr>`;
+            }).join('') + `<tr class="bg-slate-900 text-white font-bold">
+                <td class="py-3 px-3">TOTAL</td>
+                <td class="py-3 px-3 text-right">${totalRow.total.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-emerald-400">${totalRow.aktif.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right">${totalRow.sh.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right">${totalRow.kapBln.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-emerald-400">${totalRow.projBln.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-emerald-300 font-extrabold">${totalRow.projThn.toLocaleString('id-ID')}</td>
+            </tr>`;
+        }
+
+        function renderPengajuanTable() {
+            const body = document.getElementById('pengajuanTableBody');
+            let totalSubmit = 0, totalProses = 0, totalTerbit = 0;
+
+            body.innerHTML = pengajuanData.map(item => {
+                totalSubmit += item.submit;
+                totalProses += item.proses;
+                totalTerbit += item.terbit;
+                const grandTotal = item.submit + item.proses + item.terbit;
+
+                return `<tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-4 font-semibold text-slate-800">${item.prov}</td>
+                    <td class="py-2.5 px-4 text-right text-amber-600 font-medium">${item.submit.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-4 text-right text-blue-600 font-medium">${item.proses.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-4 text-right text-emerald-600 font-medium">${item.terbit.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-4 text-right font-bold bg-slate-50">${grandTotal.toLocaleString('id-ID')}</td>
+                </tr>`;
+            }).join('') + `<tr class="bg-slate-900 text-white font-bold">
+                <td class="py-3 px-4">TOTAL</td>
+                <td class="py-3 px-4 text-right text-amber-400">${totalSubmit.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-4 text-right text-blue-400">${totalProses.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-4 text-right text-emerald-400">${totalTerbit.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-4 text-right font-extrabold text-white bg-slate-950">${(totalSubmit + totalProses + totalTerbit).toLocaleString('id-ID')}</td>
+            </tr>`;
+        }
+
+        function renderRPHData() {
+            const body = document.getElementById('rphTableBody');
+            let totalAktif = 0, totalInaktif = 0, totalRph = 0, totalDinas = 0, totalNkv = 0, totalHalal = 0;
+
+            body.innerHTML = rphNkvHalalData.map(item => {
+                totalAktif += item.rphAktif;
+                totalInaktif += item.rphInaktif;
+                totalRph += item.rphTotal;
+                totalDinas += item.dinas;
+                totalNkv += item.nkv;
+                totalHalal += item.halal;
+
+                return `<tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-3 font-semibold text-slate-800">${item.prov}</td>
+                    <td class="py-2.5 px-3 text-right font-medium text-emerald-600">${item.rphAktif.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right text-rose-500">${item.rphInaktif.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold">${item.rphTotal.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right">${item.dinas.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold text-amber-700 bg-amber-50/40">${item.nkv.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 text-right font-bold text-emerald-700 bg-emerald-50/40">${item.halal.toLocaleString('id-ID')}</td>
+                </tr>`;
+            }).join('') + `<tr class="bg-slate-900 text-white font-bold">
+                <td class="py-3 px-3">TOTAL</td>
+                <td class="py-3 px-3 text-right text-emerald-400">${totalAktif.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-rose-300">${totalInaktif.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right">${totalRph.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right">${totalDinas.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-amber-400 bg-slate-950">${totalNkv.toLocaleString('id-ID')}</td>
+                <td class="py-3 px-3 text-right text-emerald-300 bg-slate-950 font-extrabold">${totalHalal.toLocaleString('id-ID')}</td>
+            </tr>`;
+        }
+
+        function renderLPHTables() {
+            const bodyPratama = document.getElementById('lphPratamaBody');
+            const bodyUtama = document.getElementById('lphUtamaBody');
+
+            bodyPratama.innerHTML = lphPratama.map(i => `<tr class="hover:bg-slate-50">
+                <td class="py-2 px-3 font-medium text-slate-800">${i.scope}</td>
+                <td class="py-2 px-3 text-right font-semibold text-slate-700">${i.lph}</td>
+                <td class="py-2 px-3 text-right font-bold text-blue-600">${i.auditor.toLocaleString('id-ID')}</td>
+            </tr>`).join('') + `<tr class="bg-slate-100 font-bold text-slate-900 border-t">
+                <td class="py-2.5 px-3">TOTAL PRATAMA</td>
+                <td class="py-2.5 px-3 text-right">286</td>
+                <td class="py-2.5 px-3 text-right text-blue-700">2.710</td>
+            </tr>`;
+
+            bodyUtama.innerHTML = lphUtama.map(i => `<tr class="hover:bg-slate-50">
+                <td class="py-2 px-3 font-medium text-slate-800">${i.scope}</td>
+                <td class="py-2 px-3 text-right font-semibold text-slate-700">${i.lph}</td>
+                <td class="py-2 px-3 text-right font-bold text-emerald-600">${i.auditor.toLocaleString('id-ID')}</td>
+            </tr>`).join('') + `<tr class="bg-slate-100 font-bold text-slate-900 border-t">
+                <td class="py-2.5 px-3">TOTAL UTAMA</td>
+                <td class="py-2.5 px-3 text-right">531</td>
+                <td class="py-2.5 px-3 text-right text-emerald-700">24.042</td>
+            </tr>`;
+        }
+
+        function renderLHLNTable() {
+            const body = document.getElementById('lhlnTableBody');
+            let total = 0;
+
+            body.innerHTML = lhlnMra.map(i => {
+                total += i.count;
+                return `<tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-4 font-bold text-slate-800">${i.country}</td>
+                    <td class="py-2.5 px-4 text-slate-600 leading-relaxed">${i.scope}</td>
+                    <td class="py-2.5 px-4 text-right font-extrabold text-indigo-600 bg-indigo-50/30">${i.count}</td>
+                </tr>`;
+            }).join('') + `<tr class="bg-slate-900 text-white font-bold">
+                <td colspan="2" class="py-3 px-4">TOTAL LHLN MRA</td>
+                <td class="py-3 px-4 text-right text-emerald-400 font-extrabold">${total}</td>
+            </tr>`;
+        }
+
+        // FILTER TABLE SEARCH
+        function filterTable(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById(tableId);
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length - 1; i++) { // Exclude footer and header
+                let td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // CHART PROYEKSI
+        function initProyeksiChart() {
+            const ctx = document.getElementById('proyeksiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026 (P)', '2027 (P)', '2028 (P)', '2029 (P)'],
+                    datasets: [
+                        {
+                            label: 'Makanan',
+                            data: [47678, 251287, 570247, 2116736, 2578818, 3879005, 5179192, 6479379, 7779566, 9079753],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2.5
+                        },
+                        {
+                            label: 'Minuman',
+                            data: [5388, 23974, 52732, 267458, 200758, 291395, 382032, 472669, 563306, 653943],
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            fill: false
+                        },
+                        {
+                            label: 'Total Keseluruhan Produk',
+                            data: [58054, 321157, 709279, 2473638, 2938525, 4479819, 5822368, 7264949, 8707090, 10116180],
+                            borderColor: '#0f172a',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    return (value / 1000000).toFixed(1) + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
